@@ -8,13 +8,13 @@
 
   "backend_base_url": "https://final-exam-3-2.onrender.com/",
 
-  "frontend_url": "https://xxx.netlify.app",
+  "frontend_url": "https://ventest-48217.web.app/#/",
 
   "api": {
 
-    "health": "https://xxx.onrender.com/api/health",
+    "health": "https://final-exam-3-2.onrender.com/api/health",
 
-    "tasks": "https://xxx.onrender.com/api/tasks"
+    "tasks": "https://final-exam-3-2.onrender.com/api/tasks"
 
   }
 
