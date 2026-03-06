@@ -52,14 +52,17 @@ app.get('/api/tasks', (req, res) => {
     const logMessage = `Request at ${new Date().toISOString()}: ${req.ip}\n`;
     fs.appendFileSync(path.join(logsDir, 'access.log'), logMessage);
 
+    // Temporary dummy response until database is connected
     res.json({
-        git: {
-            title: 'Advanced Git Workflow',
-            detail: 'ใช้ branch protection บน GitHub, code review ใน PR, และ squash merge เพื่อ history สะอาด'
-        },
-        docker: {
-            title: 'Advanced Docker',
-            detail: 'ใช้ multi-stage build, healthcheck ใน Dockerfile, และ orchestration ด้วย Compose/Swarm'
-        }
+        data: []
     });
+});
+
+// Health check endpoint
+app.get("/api/health", (req, res) => {
+  res.status(200).json({
+    status: "ok",
+    service: "backend",
+    time: new Date()
+  });
 });
