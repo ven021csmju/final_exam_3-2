@@ -48,6 +48,15 @@ app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
 
+// Health check endpoint
+app.get("/api/health", (req, res) => {
+  res.status(200).json({
+    status: "ok",
+    service: "backend",
+    time: new Date()
+  });
+});
+
 app.get('/api/tasks', (req, res) => {
     const logMessage = `Request at ${new Date().toISOString()}: ${req.ip}\n`;
     fs.appendFileSync(path.join(logsDir, 'access.log'), logMessage);
@@ -59,10 +68,5 @@ app.get('/api/tasks', (req, res) => {
 });
 
 // Health check endpoint
-app.get("/api/health", (req, res) => {
-  res.status(200).json({
-    status: "ok",
-    service: "backend",
-    time: new Date()
-  });
-});
+
+
