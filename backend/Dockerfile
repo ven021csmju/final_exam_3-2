@@ -10,31 +10,33 @@ RUN npm ci
 
 COPY . .
 
+# generate prisma client
 RUN npx prisma generate
+
+# build typescript
 RUN npm run build
 
 
 # Stage 2: Production
 FROM node:20-alpine
 
-WORKDIR /app
-
 RUN apk add --no-cache openssl
+
+WORKDIR /app
 
 ENV NODE_ENV=production
 
-RUN mkdir -p /app/logs && chown -R node:node /app
-
+# install production deps
 COPY package*.json ./
 RUN npm ci --omit=dev
 
-COPY --from=builder --chown=node:node /app/dist ./dist
-COPY --from=builder --chown=node:node /app/prisma ./prisma
-COPY --from=builder --chown=node:node /app/node_modules/.prisma ./node_modules/.prisma
-COPY --from=builder --chown=node:node /app/node_modules/@prisma/client ./node_modules/@prisma/client
-
-USER node
+# copy build output
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/prisma ./prisma
+COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
+COPY --from=builder /app/node_modules/@prisma/client ./node_modules/@prisma/client
 
 EXPOSE 3000
 
+# start server
 CMD ["sh", "-c", "npx prisma db push && node dist/server.js"]
