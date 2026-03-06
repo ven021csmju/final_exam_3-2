@@ -92,13 +92,14 @@ const fetchTasks = async () => {
   errorMessage.value = '';
 
   try {
-    const res = await api.get('/tasks');
-    tasks.value = res.data.data; // backend ส่ง { data: [...] }
+    const API_URL = 'https://final-exam-3-2.onrender.com/api/tasks';
+    const res = await api.get(API_URL);
+    tasks.value = res.data.data || res.data; // backend ส่ง { data: [...] } หรือ [...]
   } catch (err) {
     console.error('API Error:', err);
     const status = err.response ? err.response.status : 'Network Error';
     errorMessage.value = `โหลดงานไม่สำเร็จ (${status})`;
-    loadingErrorUrl.value = api.defaults.baseURL + '/tasks';
+    loadingErrorUrl.value = 'https://final-exam-3-2.onrender.com/api/tasks';
   } finally {
     loading.value = false;
   }
